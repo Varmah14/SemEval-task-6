@@ -38,6 +38,5 @@ We build upon:
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/<your-username>/clarity-task.git
-cd clarity-task
+git clone https://github.com/Varmah14/SemEval-task-6.git
 ```
