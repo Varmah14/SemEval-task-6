@@ -1,9 +1,19 @@
 import argparse
-from datasets import DatasetDict
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
-from evaluate import load as load_metric
 import numpy as np
-from src.data import load_qevasion, get_text_pair, label_maps_clarity
+from transformers import (
+    AutoTokenizer,
+    AutoModelForSequenceClassification,
+    TrainingArguments,
+    Trainer,
+)
+from evaluate import load as load_metric
+
+from src.data import (
+    get_text_pair,
+    label_maps_clarity,
+    prepare_qevasion,
+)
+
 
 def tokenize(batch, tokenizer, label2id):
     q, a = get_text_pair(batch)
@@ -11,30 +21,62 @@ def tokenize(batch, tokenizer, label2id):
     enc["labels"] = label2id[batch["clarity_label"]]
     return enc
 
-def main(model_name="roberta-base", out_dir="out/task1-roberta", seed=42, epochs=3, bs=8, lr=2e-5, valid_size=0.15):
-    ds = load_qevasion(splits=("train","test"))
-    split = ds["train"].train_test_split(test_size=valid_size, seed=seed)
-    train, valid = split["train"], split["test"]
+
+def main(
+    model_name="roberta-base",
+    out_dir="out/task1-roberta",
+    seed=42,
+    epochs=3,
+    bs=8,
+    lr=2e-5,
+    valid_size=0.15,
+):
+    # Load cached train/valid (or create & save on first run)
+    train, valid = prepare_qevasion(valid_size=valid_size, seed=seed, revision="main")
+
+    # Ensure examples have a label
+    train = train.filter(
+        lambda ex: ex.get("clarity_label") is not None and ex["clarity_label"] != ""
+    )
+    valid = valid.filter(
+        lambda ex: ex.get("clarity_label") is not None and ex["clarity_label"] != ""
+    )
 
     label2id, id2label = label_maps_clarity(train)
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    tr = train.map(lambda b: tokenize(b, tokenizer, label2id), remove_columns=train.column_names)
-    va = valid.map(lambda b: tokenize(b, tokenizer, label2id), remove_columns=valid.column_names)
+
+    tr = train.map(
+        lambda b: tokenize(b, tokenizer, label2id), remove_columns=train.column_names
+    )
+    va = valid.map(
+        lambda b: tokenize(b, tokenizer, label2id), remove_columns=valid.column_names
+    )
 
     model = AutoModelForSequenceClassification.from_pretrained(
-        model_name,
-        num_labels=len(label2id),
-        id2label=id2label,
-        label2id=label2id
+        model_name, num_labels=len(label2id), id2label=id2label, label2id=label2id
     )
 
     f1_metric = load_metric("f1")
 
     def comp(eval_pred):
-        logits, labels = eval_pred
+        # Handles both tuple and EvalPrediction
+        logits = (
+            eval_pred[0]
+            if isinstance(eval_pred, (list, tuple))
+            else eval_pred.predictions
+        )
+        labels = (
+            eval_pred[1]
+            if isinstance(eval_pred, (list, tuple))
+            else eval_pred.label_ids
+        )
         preds = np.argmax(logits, axis=-1)
-        return {"macro_f1": f1_metric.compute(predictions=preds, references=labels, average="macro")["f1"]}
+        return {
+            "macro_f1": f1_metric.compute(
+                predictions=preds, references=labels, average="macro"
+            )["f1"]
+        }
 
     args = TrainingArguments(
         output_dir=out_dir,
@@ -48,16 +90,21 @@ def main(model_name="roberta-base", out_dir="out/task1-roberta", seed=42, epochs
         load_best_model_at_end=True,
         metric_for_best_model="macro_f1",
         seed=seed,
-        report_to="none"
+        report_to="none",
+        save_total_limit=2,  #  keeps disk usage in check
+        remove_unused_columns=True,  # safe since we mapped to model inputs
+        # fp16=True,                   # (optional) if you have a CUDA GPU
     )
 
-    trainer = Trainer(model=model, args=args, train_dataset=tr, eval_dataset=va, compute_metrics=comp)
+    trainer = Trainer(
+        model=model, args=args, train_dataset=tr, eval_dataset=va, compute_metrics=comp
+    )
     trainer.train()
 
-    # Save final best model
     trainer.save_model(out_dir)
     tokenizer.save_pretrained(out_dir)
     print("Training complete. Best model saved to", out_dir)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
