@@ -1,0 +1,41 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+
+# --- Virtual environment ---
+.venv/
+env/
+venv/
+ENV/
+
+# --- Jupyter Notebook checkpoints ---
+.ipynb_checkpoints/
+
+# --- Datasets / HF cache / downloaded models ---
+cache/
+datasets/
+.huggingface/
+~/.cache/huggingface/
+~/.cache/torch/
+
+# --- Model & training outputs ---
+out/
+checkpoints/
+runs/
+wandb/
+
+# --- OS / Editor files ---
+.DS_Store
+*.swp
+*.swo
+
+# --- Logs ---
+*.log
+
+# --- Mac metadata ---
+.DS_Store
+
+# --- VSCode ---
+.vscode/

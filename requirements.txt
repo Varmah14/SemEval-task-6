@@ -1,0 +1,9 @@
+torch>=2.2
+transformers>=4.44
+datasets>=3.0
+accelerate
+scikit-learn
+evaluate
+pandas
+numpy
+tqdm
