@@ -1,5 +1,3 @@
-cat > README.md << 'EOF'
-
 # 🧠 CLARITY: Detecting Ambiguity and Evasion in Political Discourse
 
 This repository contains our team's implementation for the **CLARITY Shared Task**, which focuses on detecting **response ambiguity and evasion techniques** in political discourse (e.g., presidential debates and interviews).  
