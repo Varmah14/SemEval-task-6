@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score, classification_report
 import xgboost as xgb
@@ -74,7 +75,9 @@ def train_xgboost(X_train, X_test, y_train, y_test, label_map, task):
         learning_rate=0.1,
         random_state=42,
         eval_metric='mlogloss',
-        tree_method='hist'
+        #GPU PARAMETERS:
+        tree_method='hist', 
+        device='cuda', #use 'cuda' for GPU
     )
     
     model.fit(X_train, y_train)
