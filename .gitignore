@@ -39,3 +39,6 @@ wandb/
 
 # --- VSCode ---
 .vscode/
+
+models/
+results/
