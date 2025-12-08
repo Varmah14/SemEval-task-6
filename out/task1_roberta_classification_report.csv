@@ -1,0 +1,15 @@
+                 precision    recall  f1-score   support
+
+     Ambivalent     0.7166    0.8246    0.7668       325
+Clear Non-Reply     0.5610    0.4694    0.5111        49
+    Clear Reply     0.5728    0.4097    0.4777       144
+
+       accuracy                         0.6757       518
+      macro avg     0.6168    0.5679    0.5852       518
+   weighted avg     0.6619    0.6757    0.6623       518
+
+Confusion matrix (rows=true, cols=pred):
+                 Ambivalent  Clear Non-Reply  Clear Reply
+Ambivalent              268               16           41
+Clear Non-Reply          23               23            3
+Clear Reply              83                2           59
