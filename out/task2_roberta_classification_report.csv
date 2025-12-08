@@ -1,0 +1,40 @@
+Loading Task 2 model from: out/task2-roberta
+Seed = 42, valid_size = 0.15, batch_size = 16
+Loading ailsntua/QEvasion dataset...
+Train size: 2930, raw valid size: 518
+Number of evasion classes: 9
+Classes: ['Claims ignorance', 'Clarification', 'Declining to answer', 'Deflection', 'Dodging', 'Explicit', 'General', 'Implicit', 'Partial/half-answer']
+Model loaded.
+Valid examples with evasion_label: 518
+
+=== Task 2: Evasion-level classification on validation split ===
+
+                     precision    recall  f1-score   support
+
+   Claims ignorance     0.2500    0.3571    0.2941        14
+      Clarification     0.8000    0.5714    0.6667        14
+Declining to answer     0.3704    0.4762    0.4167        21
+         Deflection     0.0000    0.0000    0.0000        45
+            Dodging     0.4054    0.3719    0.3879       121
+           Explicit     0.3510    0.8264    0.4928       144
+            General     1.0000    0.0164    0.0323        61
+           Implicit     0.4000    0.0444    0.0800        90
+Partial/half-answer     0.0000    0.0000    0.0000         8
+
+           accuracy                         0.3707       518
+          macro avg     0.3974    0.2960    0.2634       518
+       weighted avg     0.4229    0.3707    0.2882       518
+
+Confusion matrix (rows=true, cols=pred):
+                     Claims ignorance  ...  Partial/half-answer
+Claims ignorance                    5  ...                    0
+Clarification                       0  ...                    0
+Declining to answer                 1  ...                    0
+Deflection                          1  ...                    0
+Dodging                             6  ...                    0
+Explicit                            2  ...                    0
+General                             3  ...                    0
+Implicit                            2  ...                    0
+Partial/half-answer                 0  ...                    0
+
+[9 rows x 9 columns]
