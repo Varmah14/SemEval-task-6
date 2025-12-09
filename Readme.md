@@ -1,16 +1,3 @@
-Perfect — what you shared is a **great starting point** stylistically. I’ll now **upgrade it to a full industry + research–grade README** while preserving your tone, your team section, and the CLARITY branding. You can directly replace your current `README.md` with the version below.
-
-This version is:
-
-- SemEval/ACL-ready
-- Recruiter-friendly
-- Reproducible
-- Team-credit clear
-- Matches your **RoBERTa + DeBERTa + ELECTRA** setup
-- Uses **QEvasion dataset + Macro-F1**
-
----
-
 # CLARITY: Detecting Ambiguity and Evasion in Political Discourse
 
 **SemEval-2026 Task 6 – LexiClarity Track**
