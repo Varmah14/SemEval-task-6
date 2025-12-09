@@ -238,14 +238,6 @@ python3 -m src.eval_valid_task2
 
 --- -->
 
-## Limitations
-
-- No debate-level context modeling yet
-- Feature engineering is static
-- No cross-domain generalization testing yet
-
----
-
 ## Future Work
 
 - Multi-task learning between clarity & evasion
