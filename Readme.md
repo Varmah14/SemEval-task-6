@@ -238,7 +238,7 @@ python3 -m src.eval_valid_task2
 
 --- -->
 
-## 🔬 Limitations
+## Limitations
 
 - No debate-level context modeling yet
 - Feature engineering is static
@@ -246,17 +246,9 @@ python3 -m src.eval_valid_task2
 
 ---
 
-## 🔮 Future Work
+## Future Work
 
 - Multi-task learning between clarity & evasion
 - Speaker-aware modeling
 - Cross-lingual evaluation
 - Error analysis of evasion strategies
-
----
-
-## 📬 Contact
-
-**Mahendra Varma Vaddi**
-MS Data Science — University of Colorado Boulder
-GitHub: [https://github.com/Varmah14](https://github.com/Varmah14)
