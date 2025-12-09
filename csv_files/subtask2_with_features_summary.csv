@@ -1,0 +1,8 @@
+metric,value,support
+accuracy,0.2275,690
+macro_avg_precision,0.1013,690
+macro_avg_recall,0.1496,690
+macro_avg_f1,0.0882,690
+weighted_avg_precision,0.2061,690
+weighted_avg_recall,0.2275,690
+weighted_avg_f1,0.1813,690
